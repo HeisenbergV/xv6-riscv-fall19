@@ -118,6 +118,7 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h
 .PRECIOUS: %.o
 
 UPROGS=\
+	$U/_sleep\
 	$U/_cat\
 	$U/_echo\
 	$U/_forktest\
