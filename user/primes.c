@@ -2,15 +2,16 @@
 #include "user/user.h"
 
 int 
-is_primes(int num){
-    int a = 0;
-    int num = 0;
-    for (int i = 2; i <= num - 1; i++){
-        if (num % i == 0)
-            a++;
+is_primes_num(int number){
+    int i, flag = 0;
+    for(i=2; i<=number/2; ++i){
+        if(number%i==0){
+            flag=1;
+            break;
+        }
     }
-
-    return a==0;
+    //flag==0 is primes number
+    return flag;
 }
 
 int 
@@ -20,16 +21,16 @@ main(int argc, char *argv[]){
 
     int number;
 
-    int cid = fork();
-    if (cid == 0){
-        for (int i = 0; i < 32; i++)
-            read(p[0], &number, 1);
-            if(is_primes(number)==0)
-                fprintf("%d", number);
+    if (fork() == 0){
+        while(read(p[0], &number, 1)!=-1){
+            if(is_primes_num(number))
+                fprintf(2, "prime %d \n", number);
+        }
     }
     else{
-        for (int i = 2; i < 32; i++)
+        for (int i = 2; i < 35; i++){
             write(p[1], &i, 1);
+        }
     }
     exit();
 }
