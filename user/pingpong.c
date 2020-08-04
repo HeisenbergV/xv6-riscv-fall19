@@ -12,12 +12,12 @@ main(int argc, char *argv[]) {
     char msg = '0';
     if(fork() == 0) {//child 进程
         read(parent_fd[0], &msg, 1);//读取
-        fprintf(2, "pid-%d: child received ping, msg: %c \n", getpid(), msg);
+        fprintf(2, "%d: child received ping, msg: %c \n", getpid(), msg);
         write(child_fd[1], &msg, 1);//写入
     } else{ //parent 进程
         write(parent_fd[1], &msg, 1);
         read(child_fd[0], &msg, 1);
-        fprintf(2, "pid-%d: parent received pong, msg: %c \n", getpid(), msg);
+        fprintf(2, "%d: parent received pong, msg: %c \n", getpid(), msg);
     }
     exit();
 }

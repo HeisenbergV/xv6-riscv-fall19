@@ -31,4 +31,5 @@ main(int argc, char *argv[]){
         for (int i = 2; i < 32; i++)
             write(p[1], &i, 1);
     }
+    exit();
 }
