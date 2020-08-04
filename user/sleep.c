@@ -5,6 +5,11 @@
 int
 main(int argc, char *argv[])
 {
-  sleep(atoi(argv));
-  exit();
+    if (argc != 2) {
+        fprintf(2, "usage: sleep seconds \n");
+        exit();
+    }
+
+    sleep(atoi(argv[1]));
+    exit();
 }
