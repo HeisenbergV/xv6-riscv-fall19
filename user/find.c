@@ -28,6 +28,7 @@ void
 find(char*path, char*name) {
     int fd;
     struct stat st;
+    fprintf(2, "------- path:%s , name: %s \n", path, name);
 
     if ((fd = open(path, 0)) < 0) {
         fprintf(2, "find: cannot open %s\n", path);
