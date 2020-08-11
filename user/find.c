@@ -43,11 +43,8 @@ find(char*path, char*name) {
     char buf[512], *p;
     struct dirent de;
 
-    if (st.type == T_FILE) {
-        if (strcmp(fmtname(path), name)) {
-            fprintf(2, "%s \n", path);
-        }
-        return;
+    if (strcmp(fmtname(path), name)) {
+        fprintf(2, "%s/%s \n", path, name);
     }
 
     if (st.type != T_DIR)
@@ -65,18 +62,14 @@ find(char*path, char*name) {
         if (de.inum == 0)
             continue;
 
-        memmove(p, de.name, DIRSIZ);
-        p[DIRSIZ] = 0;
-
-        if (strcmp(de.name, '.'))
+        if (strcmp(de.name, "."))
             continue;
 
-        if (strcmp(de.name, name))
-            fprintf(2, "%s \n", buf);
-        else
-            find(buf, name);
-    }
+        if (strcmp(de.name, ".."))
+            continue;
 
+        find(buf, name);
+    }
 }
 
 int
