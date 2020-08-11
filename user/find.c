@@ -59,7 +59,8 @@ find(char*path, char*name) {
     *p++ = '/';
 
     while (read(fd, &de, sizeof(de)) == sizeof(de)) {
-
+        fprintf(2, "while:-------  name: %s \n", de.name);
+        
         if (de.inum == 0)
             continue;
 
@@ -75,11 +76,11 @@ find(char*path, char*name) {
 
 int
 main(int argc, char *argv[]) {
-    if (argc < 2) {
-        fprintf(2, "not find file name");
+    if (argc <= 2) {
+        fprintf(2, "params error");
         exit();
     }
 
-    find(".", argv[1]);
+    find(argv[1], argv[2]);
     exit();
 }
