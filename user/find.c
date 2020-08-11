@@ -80,6 +80,6 @@ main(int argc, char *argv[]) {
         exit();
     }
 
-    find(argv[0], argv[1]);
+    find(".", argv[1]);
     exit();
 }
