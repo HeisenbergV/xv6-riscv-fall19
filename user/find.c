@@ -44,7 +44,7 @@ find(char*path, char*name) {
     char buf[512], *p;
     struct dirent de;
 
-    if (strcmp(fmtname(path), name)) {
+    if (strcmp(fmtname(path), name) == 0) {
         fprintf(2, "%s/%s \n", path, name);
     }
 
@@ -63,20 +63,18 @@ find(char*path, char*name) {
             continue;
 
         if (strcmp(de.name, ".") == 0){
-            fprintf(2, "aaaaaa:-------  name: %s \n", de.name);
             continue;
         }
      
 
         if (strcmp(de.name, "..") == 0){
-            fprintf(2, "ffff:-------  name: %s \n", de.name);
             continue;
         }
 
         memmove(buf, de.name, strlen(p));
         
-        fprintf(2, "eeee:-------  name: %s \n", de.name);
-        find(path, name);
+        fprintf(2, "eeee:------ path:%s, name: %s \n", buf, de.name);
+        find(buf, name);
     }
 }
 
