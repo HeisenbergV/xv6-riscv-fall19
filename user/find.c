@@ -61,15 +61,14 @@ find(char*path, char*name) {
     while (read(fd, &de, sizeof(de)) == sizeof(de)) {
         if (de.inum == 0)
             continue;
-        fprintf(2, "qqqq:-------  name: %s \n", de.name);
 
-        if (strcmp(de.name, ".")){
+        if (strcmp(de.name, ".") == 0){
             fprintf(2, "aaaaaa:-------  name: %s \n", de.name);
             continue;
         }
      
 
-        if (strcmp(de.name, "..")){
+        if (strcmp(de.name, "..") == 0){
             fprintf(2, "ffff:-------  name: %s \n", de.name);
             continue;
         }
