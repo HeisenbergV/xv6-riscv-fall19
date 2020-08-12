@@ -71,8 +71,7 @@ find(char*path, char*name) {
             continue;
         }
 
-        memmove(buf, de.name, strlen(p));
-        
+        strcpy(p, de.name);
         fprintf(2, "eeee:------ path:%s, name: %s \n", buf, de.name);
         find(buf, name);
     }
