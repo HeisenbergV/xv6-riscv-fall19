@@ -4,43 +4,21 @@
 #include "kernel/fs.h"
 
 
-
-char*
+char* 
 fmtname(char *path) {
     static char buf[DIRSIZ+1];
     char *p;
-
     // Find first character after last slash.
-    for (p=path+strlen(path); p >= path && *p != '/'; p--)
-        ;
-    p++;
-
-    // Return blank-padded name.
-    if (strlen(p) >= DIRSIZ)
-        return p;
-    
-    memmove(buf, p, strlen(p));
-    memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
-    return buf;
+    for(p=path+strlen(path); p >= path && *p != '/'; p--);
+    return ++p;
 }
-
-
  
-int
-same(char* src, char* sub) {
-    static char buf[DIRSIZ+1];
-    strcpy(buf, sub);
-    memset(buf+strlen(sub), ' ', DIRSIZ-strlen(sub));
-    return strcmp(src, buf);
-}
-
-
 void
 find(char*path, char*name) {
     int fd;
     struct stat st;
 
-    if (same(fmtname(path), name) == 0) {
+    if (strcmp(fmtname(path), name) == 0) {
         fprintf(2, "%s \n", path);
     }
     
