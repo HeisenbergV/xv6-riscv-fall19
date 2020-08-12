@@ -64,7 +64,7 @@ find(char*path, char*name) {
         fprintf(2, "qqqq:-------  name: %s \n", de.name);
 
         if (strcmp(de.name, ".")){
-            fprintf(2, "qqqq:-------  name: %s \n", de.name);
+            fprintf(2, "aaaaaa:-------  name: %s \n", de.name);
             continue;
         }
      
@@ -73,7 +73,7 @@ find(char*path, char*name) {
             fprintf(2, "ffff:-------  name: %s \n", de.name);
             continue;
         }
-        
+
         memmove(buf, de.name, strlen(p));
         
         fprintf(2, "eeee:-------  name: %s \n", de.name);
