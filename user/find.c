@@ -19,7 +19,6 @@ fmtname(char *path) {
     if (strlen(p) >= DIRSIZ)
         return p;
     memmove(buf, p, strlen(p));
-    memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
     return buf;
 }
 
@@ -28,7 +27,10 @@ void
 find(char*path, char*name) {
     int fd;
     struct stat st;
-    fprintf(2, "------- path:%s , name: %s \n", path, name);
+
+    if (strcmp(fmtname(path), name) == 0) {
+        fprintf(2, "%s/%s \n", path, name);
+    }
 
     if ((fd = open(path, 0)) < 0) {
         fprintf(2, "find: cannot open %s\n", path);
@@ -41,15 +43,13 @@ find(char*path, char*name) {
         return;
     }
 
-    char buf[512], *p;
-    struct dirent de;
-
-    if (strcmp(fmtname(path), name) == 0) {
-        fprintf(2, "%s/%s \n", path, name);
-    }
+    fprintf(2, "fuckkkk %s, %d \n", path, st.type);
 
     if (st.type != T_DIR)
         return;
+
+    char buf[512], *p;
+    struct dirent de;
 
     if (strlen(path) + 1 + DIRSIZ + 1 > sizeof buf)
         return;
@@ -57,10 +57,13 @@ find(char*path, char*name) {
     strcpy(buf, path);
     p = buf+strlen(buf);
     *p++ = '/';
-
     while (read(fd, &de, sizeof(de)) == sizeof(de)) {
         if (de.inum == 0)
             continue;
+
+        memmove(p, de.name, DIRSIZ);
+        p[DIRSIZ] = 0;
+        fprintf(2, "ssssssssst %s, %s \n", buf, de.name);
 
         if (strcmp(de.name, ".") == 0){
             continue;
@@ -71,8 +74,10 @@ find(char*path, char*name) {
             continue;
         }
 
-        strcpy(p, de.name);
-        fprintf(2, "eeee:------ path:%s, name: %s \n", buf, de.name);
+        if(stat(buf, &st) < 0){
+            continue;
+        }
+
         find(buf, name);
     }
 }
