@@ -59,19 +59,24 @@ find(char*path, char*name) {
     *p++ = '/';
 
     while (read(fd, &de, sizeof(de)) == sizeof(de)) {
-        
         if (de.inum == 0)
             continue;
+        fprintf(2, "qqqq:-------  name: %s \n", de.name);
 
-        if (strcmp(de.name, "."))
+        if (strcmp(de.name, ".")){
+            fprintf(2, "qqqq:-------  name: %s \n", de.name);
             continue;
+        }
+     
 
-        if (strcmp(de.name, ".."))
+        if (strcmp(de.name, "..")){
+            fprintf(2, "ffff:-------  name: %s \n", de.name);
             continue;
+        }
         
         memmove(buf, de.name, strlen(p));
         
-        fprintf(2, "while:-------  name: %s \n", de.name);
+        fprintf(2, "eeee:-------  name: %s \n", de.name);
         find(path, name);
     }
 }
