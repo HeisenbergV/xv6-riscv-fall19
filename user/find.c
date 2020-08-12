@@ -18,8 +18,20 @@ fmtname(char *path) {
     // Return blank-padded name.
     if (strlen(p) >= DIRSIZ)
         return p;
+    
     memmove(buf, p, strlen(p));
+    memset(buf+strlen(p), ' ', DIRSIZ-strlen(p));
     return buf;
+}
+
+
+ 
+int
+same(char* src, char* sub) {
+    static char buf[DIRSIZ+1];
+    strcpy(buf, sub);
+    memset(buf+strlen(sub), ' ', DIRSIZ-strlen(sub));
+    return strcmp(src, buf);
 }
 
 
@@ -28,10 +40,10 @@ find(char*path, char*name) {
     int fd;
     struct stat st;
 
-    if (strcmp(fmtname(path), name) == 0) {
-        fprintf(2, "%s/%s \n", path, name);
+    if (same(fmtname(path), name) == 0) {
+        fprintf(2, "%s \n", path);
     }
-
+    
     if ((fd = open(path, 0)) < 0) {
         fprintf(2, "find: cannot open %s\n", path);
         return;
@@ -43,10 +55,10 @@ find(char*path, char*name) {
         return;
     }
 
-    fprintf(2, "fuckkkk %s, %d \n", path, st.type);
-
-    if (st.type != T_DIR)
+    if (st.type != T_DIR){
+        close(fd);
         return;
+    }
 
     char buf[512], *p;
     struct dirent de;
@@ -57,26 +69,19 @@ find(char*path, char*name) {
     strcpy(buf, path);
     p = buf+strlen(buf);
     *p++ = '/';
+
     while (read(fd, &de, sizeof(de)) == sizeof(de)) {
         if (de.inum == 0)
             continue;
 
         memmove(p, de.name, DIRSIZ);
         p[DIRSIZ] = 0;
-        fprintf(2, "ssssssssst %s, %s \n", buf, de.name);
 
-        if (strcmp(de.name, ".") == 0){
+        if (strcmp(de.name, ".") == 0)
             continue;
-        }
      
-
-        if (strcmp(de.name, "..") == 0){
+        if (strcmp(de.name, "..") == 0)
             continue;
-        }
-
-        if(stat(buf, &st) < 0){
-            continue;
-        }
 
         find(buf, name);
     }
