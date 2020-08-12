@@ -59,7 +59,6 @@ find(char*path, char*name) {
     *p++ = '/';
 
     while (read(fd, &de, sizeof(de)) == sizeof(de)) {
-        fprintf(2, "while:-------  name: %s \n", de.name);
         
         if (de.inum == 0)
             continue;
@@ -69,8 +68,11 @@ find(char*path, char*name) {
 
         if (strcmp(de.name, ".."))
             continue;
-
-        find(buf, name);
+        
+        memmove(buf, de.name, strlen(p));
+        
+        fprintf(2, "while:-------  name: %s \n", de.name);
+        find(path, name);
     }
 }
 
